@@ -1,6 +1,7 @@
 import { Router } from 'express';
-import { startOfHour, parseISO } from 'date-fns';
-import AppointmentRepository from '../repositories/AppointimentsRepository';
+import { parseISO } from 'date-fns';
+import AppointmentRepository from '../repositories/AppointmentRepository';
+import CreateAppointmentService from '../services/CreateAppointmentService';
 
 const appointmentsRouter = Router();
 const appointmentRepository = new AppointmentRepository();
@@ -12,19 +13,21 @@ appointmentsRouter.get('/', (request, response) => {
 });
 
 appointmentsRouter.post('/', (request, response) => {
-  const { provider, date } = request.body;
+  try {
+    const { provider, date } = request.body;
 
-  const parseDate = startOfHour(parseISO(date));
+    const parseDate = parseISO(date);
 
-  const timeConflict = appointmentRepository.findAppointments(parseDate);
+    const CreateAppointment = new CreateAppointmentService(
+      appointmentRepository,
+    );
 
-  if (timeConflict) {
-    return response.status(400).json({ message: 'Error conflito' });
+    const appointment = CreateAppointment.run({ date: parseDate, provider });
+
+    return response.json(appointment);
+  } catch (err: any) {
+    return response.status(400).json({ error: err.message });
   }
-
-  const appointment = appointmentRepository.create(provider, parseDate);
-
-  return response.json(appointment);
 });
 
 export default appointmentsRouter;
