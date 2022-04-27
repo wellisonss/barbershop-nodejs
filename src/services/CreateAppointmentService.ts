@@ -1,6 +1,9 @@
 import { startOfHour } from 'date-fns';
-import Appointment from '../models/Appointments';
-import AppointmentRepository from '../repositories/AppointmentRepository';
+import { getCustomRepository } from 'typeorm';
+import { uuid } from 'uuidv4';
+
+import Appointment from '../models/Appointment';
+import AppointmentsRepository from '../repositories/AppointmentRepository';
 
 interface Request {
   provider: string;
@@ -8,26 +11,26 @@ interface Request {
 }
 
 class CreateAppointmentService {
-  private appointmentsRepository: AppointmentRepository;
+  public async execute({ date, provider }: Request): Promise<Appointment> {
+    const appointmentsRepository = getCustomRepository(AppointmentsRepository);
 
-  constructor(appointmentsRepository: AppointmentRepository) {
-    this.appointmentsRepository = appointmentsRepository;
-  }
-
-  public run({ provider, date }: Request): Appointment {
     const appointmentDate = startOfHour(date);
 
-    const timeConflict =
-      this.appointmentsRepository.findAppointments(appointmentDate);
+    const findAppointmentInSameDate =
+      appointmentsRepository.findByDate(appointmentDate);
 
-    if (timeConflict) {
-      throw new SyntaxError('Error: time conflict');
+    if (await findAppointmentInSameDate) {
+      throw Error('Error: time conflict');
     }
 
-    const appointment = this.appointmentsRepository.create({
+    const appointment = appointmentsRepository.create({
+      id: uuid(),
       provider,
       date: appointmentDate,
     });
+
+    await appointmentsRepository.save(appointment);
+
     return appointment;
   }
 }
