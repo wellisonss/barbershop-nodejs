@@ -31,7 +31,7 @@ export default class CreateAppointments1651078308811
             default: 'now()',
           },
           {
-            name: 'update_at',
+            name: 'updated_at',
             type: 'timestamp',
             default: 'now()',
           },

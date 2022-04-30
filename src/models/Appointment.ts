@@ -1,18 +1,21 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   CreateDateColumn,
   UpdateDateColumn,
   ManyToOne,
   JoinColumn,
 } from 'typeorm';
 
+import { v4 as uuidv4 } from 'uuid';
+
+
 import User from './User';
 
 @Entity('appointments')
 class Appointment {
-  @PrimaryGeneratedColumn('uuid')
+  @PrimaryColumn()
   id: string;
 
   @Column()
@@ -29,6 +32,12 @@ class Appointment {
   created_at: Date;
 
   @UpdateDateColumn()
-  update_at: Date;
+  updated_at: Date;
+
+  constructor(){
+    if(!this.id){
+    this.id = uuidv4();
+  }
+}
 }
 export default Appointment;
