@@ -10,7 +10,6 @@ import {
 
 import { v4 as uuidv4 } from 'uuid';
 
-
 import User from './User';
 
 @Entity('appointments')
@@ -34,10 +33,10 @@ class Appointment {
   @UpdateDateColumn()
   updated_at: Date;
 
-  constructor(){
-    if(!this.id){
-    this.id = uuidv4();
+  constructor() {
+    if (!this.id) {
+      this.id = uuidv4();
+    }
   }
-}
 }
 export default Appointment;

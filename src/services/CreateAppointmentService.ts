@@ -1,6 +1,6 @@
 import { startOfHour } from 'date-fns';
 import { getCustomRepository } from 'typeorm';
-import { v4 as uuid_v4 } from "uuid";
+import { v4 as uuid_v4 } from 'uuid';
 
 import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentRepository';

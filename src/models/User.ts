@@ -19,7 +19,7 @@ class User {
   email: string;
 
   @Column()
-  password: string;
+  password?: string;
 
   @CreateDateColumn()
   created_at: Date;
@@ -28,7 +28,7 @@ class User {
   updated_at: Date;
 
   constructor() {
-    if(!this.id){
+    if (!this.id) {
       this.id = uuidv4();
     }
   }
