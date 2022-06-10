@@ -18,8 +18,8 @@ class User {
   @Column()
   email: string;
 
-  @Column()
-  password?: string;
+  @Column({ select: true })
+  password: string;
 
   @CreateDateColumn()
   created_at: Date;
