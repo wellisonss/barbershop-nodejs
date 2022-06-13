@@ -14,6 +14,7 @@ sessionsRouter.post('/', async (request, response) => {
       password,
     });
 
+    console.log(token);
     return response.json({ user, token });
   } catch (err: any) {
     return response.status(400).json({ error: err.message });
