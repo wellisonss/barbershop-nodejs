@@ -18,7 +18,11 @@ class User {
   @Column()
   email: string;
 
+<<<<<<< HEAD
   @Column()
+=======
+  @Column({ select: true })
+>>>>>>> 4e927318945250ca6b992e8a787eef6a616f2261
   password: string;
 
   @CreateDateColumn()

@@ -6,8 +6,23 @@ import uploadConfig from '../config/upload';
 import ensureAuthenticated from '../middlewares/ensureAuthenticated';
 import UpdateUserAvatarService from '../services/UpdateUserAvatarService';
 
+import ensureAuthenticated from '../middlewares/ensureAuthenticated';
+
 const usersRouter = Router();
 const uplaod = multer(uploadConfig);
+
+interface NewUser {
+  id: 'string';
+  name: 'string';
+  email: 'string';
+  password?: 'string';
+  created_at: 'date';
+  updated_at: 'date';
+}
+
+usersRouter.patch('/avatar', ensureAuthenticated, async (request, response) => {
+  return response.send('okay');
+});
 
 usersRouter.post('/', async (request, response) => {
   try {
