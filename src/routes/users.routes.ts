@@ -37,14 +37,14 @@ usersRouter.patch(
     try {
       const updateUserAvatar = new UpdateUserAvatarService();
 
-      updateUserAvatar.execute({
+      const user = await updateUserAvatar.execute({
         userId: request.user.id,
-        avatarFileName: request.file?.filename,
+        avatarFileName: request.file!.filename,
       });
 
       console.log(request.file);
 
-      return response.json({ ok: true });
+      return response.json(user);
     } catch (err: any) {
       return response.status(400).json({ error: err.message });
     }
